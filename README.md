@@ -11,7 +11,7 @@
 <img alt="Mode 26 hardware validated" src="https://img.shields.io/badge/Mode_26-hardware_validated-31e6b0?style=flat-square">
 <img alt="MIT license" src="https://img.shields.io/badge/license-MIT-8899aa?style=flat-square">
 
-[Architecture](#architecture) · [Commands](#commands) · [Build notes](docs/BUILD.md) · [Validation](docs/VALIDATION.md) · [Compatibility](docs/COMPATIBILITY.md) · [Changelog](CHANGELOG.md)
+[Architecture](#architecture) · [Hardware](#hardware-and-setup) · [Commands](#commands) · [Build notes](docs/BUILD.md) · [Validation](docs/VALIDATION.md) · [Compatibility](docs/COMPATIBILITY.md) · [Changelog](CHANGELOG.md)
 
 </div>
 
@@ -80,9 +80,38 @@ The new inventory was returned successfully through WEXP on physical hardware. T
 
 ## Hardware and setup
 
-- M5Stack Cardputer ADV (ESP32-S3), BitPirate v1.8.
-- ESP32-C5 development board with independent power.
-- A trusted LAN permitting communication between the two boards; no soldering required for the wireless link.
+### Reference hardware — ESP32-C5 DevKitC-1 N8R8
+
+<img src="assets/esp32-c5-n8r8.jpg" alt="DOIT ESP32-C5 DevKitC-1 N8R8, HW-983 development board with two USB-C connectors and an integrated PCB antenna" width="260">
+
+*Reference image: cropped from the supplied retailer product listing. Board markings: DOIT ESPC5-32, HW-983. Image is for hardware identification, not a pinout.*
+
+| Specification | Reference configuration |
+| --- | --- |
+| Board | ESP32-C5 DevKitC-1 N8R8 (DOIT/HW-983 variant shown) |
+| Processor | 32-bit RISC-V, up to 240 MHz |
+| Flash | 8 MB (N8) |
+| PSRAM | 8 MB (R8) |
+| Wi-Fi | 2.4 GHz and 5 GHz, Wi-Fi 6 (802.11ax) |
+| Bluetooth | Bluetooth LE 5 |
+| IEEE 802.15.4 | Zigbee / Thread capable |
+| Antenna | Integrated PCB antenna |
+| USB | Dual USB-C: USB-to-UART and native USB |
+
+The board-specific memory specifications are taken from the supplied listing and are consistent with Espressif's official N8R8 configuration. Exact module, memory initialization and pin assignments on third-party boards may differ. The flash and PSRAM capacities are hardware specifications, not a claim that all memory is available to the firmware.
+
+**Firmware validation scope:** dual-band discovery was demonstrated on C5 v6.5; v6.7 regression is pending. BLE functionality and Zigbee/Thread coexistence have not been fully hardware-validated. Zigbee remains disabled in the bridge-safe build. Advertised radio support does not imply simultaneous operation or full implementation in Wireless Expander.
+
+### Host and deployment
+
+- M5Stack Cardputer ADV (ESP32-S3), BitPirate v1.8 with native Mode 26 integration.
+- ESP32-C5 N8R8 development board with independent power.
+- A trusted LAN permitting communication between the two boards; no additional inter-board signal wiring or soldering required.
+- Optional existing LoRa-1262/GNSS cap retained physically; functional coexistence regression is pending.
+
+**Flashing note:** the reference C5 was successfully programmed via the USB-to-UART USB-C connector rather than the native USB connector. Preserve the known working Arduino settings, including partition configuration and Zigbee Mode Disabled. Do not infer PSRAM stability from its advertised capacity.
+
+Hardware reference: [Espressif ESP32-C5-DevKitC-1 user guide](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32c5/esp32-c5-devkitc-1/user_guide.html) and [ESP32-C5 platform specifications](https://docs.espressif.com/projects/esp-techpedia/en/latest/esp-friends/get-started/board-selection.html).
 
 See [build and installation notes](docs/BUILD.md), [protocol](docs/PROTOCOL.md), and [security limitations](SECURITY.md). The C5 sketch and exact installers are being staged for publication; do not assume the repository is flash-ready until the complete source package has been committed.
 

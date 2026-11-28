@@ -4,6 +4,8 @@ Baseline: upstream BitPirate v1.8 commit `8a91778e25b699c59f34542d8ea8d405fa7e40
 
 ## C5
 
+Reference hardware: ESP32-C5 DevKitC-1 N8R8 (DOIT/HW-983 variant), advertised 8 MB flash and 8 MB PSRAM, dual USB-C with integrated antenna. See the [reference hardware section](../README.md#hardware-and-setup). The advertised PSRAM capacity is not a verified firmware memory setting; retain the working configuration.
+
 For a working v6.6 system, keep the Cardputer image unchanged. Preserve the configured v6.5 rollback sketch and Arduino settings. Use ESP32C5 Dev Module and keep Zigbee Mode Disabled. Do not alter flash size, PSRAM or partition scheme for v6.7. After uploading the C5, confirm VERSION, bridge status, SELFTEST and PING; perform the remaining regression checks before accepting the build.
 
 Use Arduino IDE with a compatible ESP32-C5 board core and ArduinoJson. Preserve the board/partition configuration of a known working build. The tested C5 board used the UART USB-C port for upload. Set your own Wi-Fi credentials locally in the sketch; never commit them. Verify the firmware before uploading and check VERSION and PING on TCP 2323 on your isolated LAN.
