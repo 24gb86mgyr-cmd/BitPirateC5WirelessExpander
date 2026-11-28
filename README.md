@@ -4,7 +4,7 @@
 
 An independent experimental extension for [ESP32 Bit Pirate](https://github.com/geo-tp/ESP32-Bit-Pirate), designed to let an M5Stack Cardputer ADV access an ESP32-C5 over a trusted local network while retaining its existing peripheral hardware.
 
-**Development milestone: v6.6 — native mode 26 (hardware validated on November 28, 2026).** This is not an official upstream release or production-ready firmware.
+**Development milestone: v6.7 — Bridge-Safe C5 candidate, with the hardware-validated v6.6 Cardputer integration (November 28, 2026).** The new `ls` command and prerequisite checks have been demonstrated on hardware; the full v6.7 regression suite is pending. This is not an official upstream release or production-ready firmware.
 
 ```text
 24. LORA
@@ -28,14 +28,14 @@ The address above is illustrative. Use the private IPv4 address of your own C5.
 
 ```mermaid
 flowchart LR
-    A["Cardputer ADV / ESP32-S3<br/>BitPirate v1.8 + WEXP"] <-->|"LAN / TCP 2323"| B["ESP32-C5<br/>v6.5 bridge"]
+    A["Cardputer ADV / ESP32-S3<br/>BitPirate v1.8 + WEXP"] <-->|"LAN / TCP 2323"| B["ESP32-C5<br/>v6.7 candidate bridge"]
     A --- C["Existing local peripherals"]
     B --- D["Dual-band Wi-Fi and diagnostics"]
 ```
 
 The original wired EXPANDER remains mode 25. Mode 26 adds a wireless route rather than replacing upstream drivers. The S3 owns the terminal; the C5 executes supported one-shot diagnostic requests. Global `c5` shortcuts remain available outside WEXP.
 
-## Verified on hardware
+## Verified on hardware — v6.6 / C5 v6.5
 
 | Function | Result |
 | --- | --- |
@@ -49,6 +49,18 @@ The original wired EXPANDER remains mode 25. Mode 26 adds a wireless route rathe
 | Unsupported command rejection | Pass |
 
 See [validation notes](docs/VALIDATION.md) for scope and remaining gaps. These results are a development milestone, not exhaustive regression or endurance testing.
+
+## v6.7: bridge-safe expansion
+
+Mode 25 compatibility is being expanded without replacing the wireless transport or relaxing the bridge lock. The existing Cardputer image does not require another flash for this C5-side upgrade.
+
+- New `ls` / `commands` inventory and Wi-Fi help.
+- Flexible band-selection syntax, CSV scan aliases and channel filtering.
+- Wi-Fi-prefixed network, DNS, TCP and HTTP diagnostic commands.
+- Local IPv4 and MAC classification (not geolocation or vendor lookup).
+- No additional Zigbee dependency, partition change or Wi-Fi configuration operation.
+
+The new inventory was returned successfully through WEXP on physical hardware. The candidate package passed 75 host-side assertions; the remaining individual command tests are documented in [validation notes](docs/VALIDATION.md). See [mode 25 compatibility](docs/COMPATIBILITY.md) for the scope and safety boundaries.
 
 ## Hardware and setup
 
@@ -77,15 +89,17 @@ From mode 14 (WIFI), connect to the LAN. Enter `mode wexp` or select 26 from the
 | `selftest` | C5 internal diagnostics |
 | `exit` | Return to HIZ |
 
-Use only networks and equipment you own or are authorized to test. Exact command syntax matters; `wifi scan 5` is not currently equivalent to `wifi scan5`.
+Use only networks and equipment you own or are authorized to test. On v6.7, `wifi scan 5` and `wifi scan5` are supported aliases; hardware testing of the new spelling is pending. The older C5 v6.5 requires `wifi scan5`.
 
 ## Roadmap
 
 - [x] v6.5: framed wireless transport
 - [x] v6.6: native mode 26 and physical-device validation
-- [ ] Reproducible source release and regression suite
+- [x] v6.7: expanded command inventory demonstrated on hardware; 75 host-side assertions passed
+- [ ] Complete v6.7 hardware regression and source publication
 - [ ] Persistent host configuration and usability improvements
 - [ ] Client lifecycle recovery, bounded operations and authentication
+- [ ] Isolated Zigbee discovery/coexistence experiment (not enabled by default)
 - [ ] Documented public beta
 - [ ] Discuss upstream integration with geo-tp
 

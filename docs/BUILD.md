@@ -1,8 +1,10 @@
 # Build and installation
 
-Baseline: upstream BitPirate v1.8 commit `8a91778e25b699c59f34542d8ea8d405fa7e4020` and C5 v6.5-dual-node-candidate. The S3 integration is v6.6. Source packaging is in progress.
+Baseline: upstream BitPirate v1.8 commit `8a91778e25b699c59f34542d8ea8d405fa7e4020` and C5 v6.5-dual-node-candidate. The S3 integration is v6.6. The v6.7 bridge-safe candidate is a C5-only upgrade; the exact source package is not yet committed.
 
 ## C5
+
+For a working v6.6 system, keep the Cardputer image unchanged. Preserve the configured v6.5 rollback sketch and Arduino settings. Use ESP32C5 Dev Module and keep Zigbee Mode Disabled. Do not alter flash size, PSRAM or partition scheme for v6.7. After uploading the C5, confirm VERSION, bridge status, SELFTEST and PING; perform the remaining regression checks before accepting the build.
 
 Use Arduino IDE with a compatible ESP32-C5 board core and ArduinoJson. Preserve the board/partition configuration of a known working build. The tested C5 board used the UART USB-C port for upload. Set your own Wi-Fi credentials locally in the sketch; never commit them. Verify the firmware before uploading and check VERSION and PING on TCP 2323 on your isolated LAN.
 

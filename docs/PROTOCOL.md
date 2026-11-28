@@ -16,3 +16,7 @@ The adapter uses a 2-second connection timeout, 45-second response deadline and 
 The legacy interactive C5 shell shares port 2323; close other sessions before testing. A prior intermittent stall recovered after resetting test conditions; the root cause is not established.
 
 No authentication or encryption is implemented. Use only a trusted isolated LAN.
+
+## v6.7 compatibility
+
+The wire format is unchanged. New aliases are normalized inside the framed diagnostic command layer, preserving argument case. The existing S3 adapter is reused. Bridge lock protects transport configuration; it is not authentication. The session lifecycle and its unresolved intermittent stall are unchanged.
