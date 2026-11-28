@@ -1,0 +1,22 @@
+# Local-only credentials and configured sketches
+.env
+.env.*
+!.env.example
+secrets.h
+credentials.h
+*local.ino
+*.local.*
+# Build artifacts and upstream checkout
+.pio/
+.venv/
+__pycache__/
+*.pyc
+*.bin
+*.elf
+*.map
+BitPirate-v1.8*/
+# Captures, device logs and machine metadata
+*.pcap
+*.pcapng
+*.log
+.DS_Store
